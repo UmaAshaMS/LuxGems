@@ -1,0 +1,79 @@
+<body>
+
+    <style>
+        .page-container {
+            display: flex;
+            min-height: 75px;
+            
+        }
+
+        .page-container p {
+            text-align: center;
+        }
+
+        .page-container h3 {
+            text-align: center;
+        }
+
+        .image-container {
+            flex: 1;
+            /* background-image: url('./public/pexels-photo-15185229.webp'); Image URL */
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            /* Full height */
+        }
+
+
+
+        .login-container {
+            flex: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            
+
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            border: 2px solid rgb(171, 135, 62);
+            border-radius: 10px;
+            padding: 10px;
+            color: black;
+            background-color: rgb(162, 165, 168);
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+
+
+    <div class="page-container">
+        <div class="image-container">
+            <image src="../../public/assets/pexels-photo-15185229.webp"
+                style="width:100px; height:100px; object-fit: cover;" alt="Image"></image>
+        </div>
+        <div class="login-container">
+            <form action="/user/login" method="post">
+                <h3>LuxGems</h3>
+                <p>Login and Let the sparkle begins</p>
+                <input type="email" name="email" placeholder="Email Id:" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <a href="/user/Forgot-Password" style="text-align: end;">Forgot Password</a>
+                <button type="submit" class="btn btn-dark rounded-pill">Login</button>
+                <p>------------------Or Continue With-----------------</p>
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-danger rounded-pill">Google</button>
+                    <button type="button" class="btn btn-primary rounded-pill">Facebook</button>
+                </div>
+                <p>Don't have an account ? <a href="/user/Sign-Up">Sign-Up</a></p>
+            </form>
+        </div>
+    </div>
+</body>

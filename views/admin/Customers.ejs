@@ -1,0 +1,84 @@
+<body>
+
+    <%- include('sidebar') %>
+
+        <style>
+            .Customer-container {
+                display: flex;
+                flex: 2;
+
+            }
+
+            .btn {
+                width: 100px;
+            }
+
+            .searchUser {
+                display: flex;
+                border: 1px;
+                border-radius: 4px;
+            }
+        </style>
+
+        <div class="Customer-container">
+            <!-- Search for user -->
+            <div class="searchUser">
+                <form method="GET" action="/admin/Customers" class="mb-4">
+                    <input type="text" name="searchQuery" placeholder="Search Users" class="form-control"
+                        value="<%= searchQuery %>">
+                    <button type="submit" class="btn btn-primary mt-2">Search</button>
+
+                </form>
+
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Sl.No</th>
+                        <th scope="col"> UserID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Status</th>
+
+                        <th scope="col">Edit</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% userDetails.forEach((user,index)=> { %>
+
+
+                        <tr>
+                            <th scope="row">
+                                <%= index+1%>
+                            </th>
+                            <td>
+                                <%=user._id%>
+                            </td>
+                            <td>
+                                <%=user.name%>
+                            </td>
+                            <td>
+                                <%=user.email%>
+                            </td>
+                            <td>
+                                <%=user.phoneNumber%>
+                            </td>
+                            <td>
+                                <%=user.isBlocked%>
+                            </td>
+                            <td><a href="/admin/edit-user" class="btn btn-warning">Unblock</a>
+                                <a href="/admin/delete-user" class=" btn btn-danger">Block</a>
+                            </td>
+                        </tr>
+
+                        <% }) %>
+                </tbody>
+            </table>
+
+        </div>
+
+        <%- include('footer') %>
+</body>

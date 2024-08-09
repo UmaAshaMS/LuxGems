@@ -1,0 +1,78 @@
+<body>
+    <style>
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+    
+        }
+
+        .page-container h3 {
+            text-align: center;
+        }
+
+        .page-container p {
+            text-align: center;
+        }
+
+        .image-container {
+            flex: 1;
+            /* background-image: url('./public/pexels-photo-15185229.webp'); Image URL */
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            /* Full height */
+        }
+
+
+
+        .SignUp-container {
+            flex: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+    
+            padding-top: 5px;
+
+        }
+
+        .SignUp-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            border: 2px solid rgb(171, 135, 62);
+            border-radius: 10px;
+            padding: 10px;
+            color: black;
+            background-color: rgb(162, 165, 168);
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+
+        }
+    </style>
+
+
+
+
+    <div class="page-container">
+        <div class="SignUp-container">
+            <form action="/user/Sign-Up" method="post">
+                <h3>LuxGems</h3>
+                <p>Sign-Up and Unlock the world of Diamonds</p>
+                <input type="text" placeholder="Full Name : " name="name" required>
+                <input type="text" placeholder="Phone Number : " name="phoneNumber" required>
+                <input type="email" placeholder="Email Id:" name="email" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <input type="password" placeholder="Confirm Password" name="confirmPassword" required>
+                <p><input type="checkbox" required>Accept terms & conditions</p>
+                <button type="submit" class="btn btn-dark">Sign-Up</button>
+                <p>Already have an accoount ? <a href="/user/login">Login</a></p>
+            </form>
+
+        </div>
+    </div>
+
+
+</body>
