@@ -1,46 +1,44 @@
 <body>
     <style>
-        .page-container {
-            display: flex;
-            min-height: 100vh;
-    
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
         }
 
-        .page-container h3 {
-            text-align: center;
+        .page-container {
+            display: flex;
+            height: 100vh;
+            width: 100%
         }
 
         .page-container p {
             text-align: center;
         }
 
+        .page-container h3 {
+            text-align: center;
+        }
+
         .image-container {
             flex: 1;
-            /* background-image: url('./public/pexels-photo-15185229.webp'); Image URL */
             background-size: cover;
             background-position: center;
-            height: 100%;
-            /* Full height */
         }
 
 
 
         .SignUp-container {
-            flex: 2;
-            min-height: 100vh;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Arial, Helvetica, sans-serif;
-    
-            padding-top: 5px;
-
+            background-color: black;
         }
 
         .SignUp-container form {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem;
             border: 2px solid rgb(171, 135, 62);
             border-radius: 10px;
             padding: 10px;
@@ -49,14 +47,40 @@
             max-width: 400px;
             width: 100%;
             box-sizing: border-box;
-
         }
+
+        .SignUp-container h3{
+            text-align: center;
+            font-family: 'Cursive', sans-serif; /* Font for the title */
+            
+        }
+
+        .SignUp-container input {
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: none;
+            background-color: #eee;
+            color: #333;
+        }
+
+
+         /* Footer style */
+         .page-container footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+        
     </style>
 
 
 
 
     <div class="page-container">
+        <div class="image-container">
+            <image src="../../public/assets/pexels-photo-15185229.webp" alt="Image"></image>
+        </div>
         <div class="SignUp-container">
             <form action="/user/Sign-Up" method="post">
                 <h3>LuxGems</h3>
@@ -69,6 +93,8 @@
                 <p><input type="checkbox" required>Accept terms & conditions</p>
                 <button type="submit" class="btn btn-dark">Sign-Up</button>
                 <p>Already have an accoount ? <a href="/user/login">Login</a></p>
+                <footer>© 2024 by LuxeGems</footer>
+
             </form>
 
         </div>
