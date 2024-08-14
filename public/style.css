@@ -1,5 +1,4 @@
-<body>
-    <style>
+
         .Container{
             display:flex;
             flex :1;
@@ -36,20 +35,4 @@
             text-decoration: none;
             color:inherit
         }
-    </style>
-
-
-
-<div class="Container">
-    <div class = 'SideBar'>
-        <button class="btn btn-dark"> <a href="/admin/home">Dashboard</a></button>
-        <button class="btn btn-dark"> <a href="/admin/Category">Category</a></button>
-        <button class="btn btn-dark"><a href="/admin/Products">Products</a></button>
-        <button class="btn btn-dark"><a href="/admin/Customers">Customers</a></button>
-        <button class="btn btn-dark">Order</button>
-        <button class="btn btn-dark">Coupons</button>
-        <button class="btn btn-dark">Banner</button>
-        <button class="btn btn-dark"><a href="/admin/adminLogin">Logout</a></button>
-    </div>
-</div>    
-</body>
+    

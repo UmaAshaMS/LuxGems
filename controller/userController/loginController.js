@@ -53,6 +53,8 @@ const SignUpPost = async (req, res) => {
 
         if (!name || !phoneNumber || !email || !password) {
             console.error('All fields are required');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
             return res.redirect('/user/Sign-Up');
         }
         const userData = {
@@ -74,7 +76,9 @@ const SignUpPost = async (req, res) => {
             await userSchema.create(userData);
             console.log(userData)
             console.log('New User');
-            res.redirect('/user/OTP');
+            if(emailRegex.test(req.body.email)){
+                res.redirect('/user/OTP');                
+            }
         }
         else {
             console.log('User already exists.')

@@ -4,6 +4,7 @@
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
+            overflow: hidden;
         }
 
         .page-container {
@@ -21,10 +22,19 @@
         }
 
         .image-container {
+            /* background-color: black; */
             flex: 1;
             background-image: url('c:/Users/Uma/Documents/Week - 7/reference/pexels-photo-15185229.webp');
             background-size: cover;
             background-position: center;
+            height:100vh;
+            width:100%;
+            overflow: hidden; /* Prevent image from overflowing */
+
+        }
+
+        .image-container img{
+            width:50vw
         }
 
 
@@ -50,11 +60,22 @@
             width: 100%;
             box-sizing: border-box;
         }
+        .italianno-regular {
+            font-family: "Italianno", cursive;
+            font-weight: 600;
+            font-style: normal;
+            font-size: large;
+            color: black
+        }
 
         .login-container h2{
             text-align: center;
-            font-family: 'Cursive', sans-serif; /* Font for the title */
+            font-size: 40px;
             
+        }
+
+        .login-container p{
+            font-size: 25px;
         }
 
         .login-container input {
@@ -73,6 +94,9 @@
             color: #666;
             margin-top: 1rem;
         }
+       
+
+
 
 
     </style>
@@ -85,19 +109,19 @@
         </div>
         <div class="login-container">
             <form action="/user/login" method="post">
-                <h2>LuxGems</h2>
-                <p>Login and Let the sparkle begins</p>
+                <h2 class="italianno-regular">LuxGems</h2>
+                <p class="italianno-regular">Login and Let the sparkle begins</p>
                 <input type="email" name="email" placeholder="Email Id:" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <a href="/user/Forgot-Password" style="text-align: end;">Forgot Password</a>
+                <a href="/user/Forgot-Password" style="text-align: end;" class="italianno-regular">Forgot Password</a>
                 <button type="submit" class="btn btn-dark rounded-pill login">Login</button>
-                <p>------------------Or Continue With-----------------</p>
+                <p class="italianno-regular">------------------Or Continue With-----------------</p>
                 <div style="text-align: center;">
                     <button type="button" class="btn btn-danger rounded-pill ">Google</button>
                     <button type="button" class="btn btn-primary rounded-pill ">Facebook</button>
                 </div>
-                <p>Don't have an account ? <a href="/user/Sign-Up">Sign-Up</a></p>
-                <footer>© 2024 by LuxeGems</footer>
+                <p class="italianno-regular">Don't have an account ? <a href="/user/Sign-Up" >Sign-Up</a></p>
+                <footer class="italianno-regular">© 2024 by LuxeGems</footer>
 
             </form>
         </div>

@@ -18,10 +18,16 @@ const adminLogin = (req, res) => {
 }
 
 const adminLoginPost = async (req, res) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
     try {
         if (req.body.email === process.env.EMAIL && req.body.password === process.env.PASSWORD) {
             req.session.admin === req.body.email
-            res.redirect('/admin/home')
+            if (emailRegex.test(req.body.email)) {
+                res.redirect('/admin/home');
+            }
         }
         else {
             res.redirect('/admin/adminLogin')
