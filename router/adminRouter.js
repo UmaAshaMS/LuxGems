@@ -19,8 +19,12 @@ admin.put('/unblockUser/:userId',adminUsercontrol.userUnblock)
 
 //Category Management
 admin.get('/Category', adminCategoryControl.category)
+admin.get('/Category/:id', adminCategoryControl.getCategoryDetails);
 admin.post('/addCategory', adminCategoryControl.addCategory)
 admin.put('/editCategory/:id', adminCategoryControl.editCategory)
+admin.put('/blockCategory/:id',adminCategoryControl.blockCategory)
+admin.put('/unblockCategory/:id',adminCategoryControl.unblockCategory)
+admin.delete('/deleteCategory/:id',adminCategoryControl.deleteCategory)
 
 
 //Product Management
