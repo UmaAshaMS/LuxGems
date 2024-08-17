@@ -54,7 +54,6 @@
             margin-left: 0px;
             padding: 20px;
             /* Arrange children side by side */
-            gap: 10px;
             /* Space between sidebar and table */
             
         }
@@ -141,7 +140,9 @@
                     <button class="btn btn-dark">Order</button>
                     <button class="btn btn-dark">Coupons</button>
                     <button class="btn btn-dark">Banner</button>
-                    <button class="btn btn-dark"><a href="/admin/adminLogin">Logout</a></button>
+                    <form action="/admin/logout" method="POST">
+                        <button type="submit" class="btn btn-dark">Logout</button>
+                    </form>
                 </div>
             </div>
 

@@ -6,15 +6,14 @@ const userLoginControl = require('../controller/userController/loginController')
 const userHomeControl = require('../controller/userController/homeController')
 
 
-user.get('/login', userLoginControl.login)
-user.post('/login', userLoginControl.loginPost)
-user.get('/Sign-Up', userLoginControl.SignUp)
-user.post('/Sign-Up', userLoginControl.SignUpPost)
-user.get('/OTP', userLoginControl.otpPage)
-user.get('/Forgot-Password', userLoginControl.ForgotPassword)
+user.get('/user/login', userLoginControl.login)
+user.post('/user/login', userLoginControl.loginPost)
+user.get('/user/Sign-Up', userLoginControl.SignUp)
+user.post('/user/Sign-Up', userLoginControl.SignUpPost)
+user.get('/user/OTP', userLoginControl.otpPage)
+user.get('/user/Forgot-Password', userLoginControl.ForgotPassword)
 
-user.get('/home', userHomeControl.home)
-user.get('/404',userHomeControl.pageNotFound)
+user.get('/user/home', userHomeControl.home)
 
 
 

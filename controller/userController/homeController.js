@@ -5,9 +5,7 @@ const home = (req, res) => {
     res.render('user/home', { title: 'Home Page' })
 }
 
-const pageNotFound = (req,res) => {
-    res.render('user/404', {title:'404'})
-} 
+ 
 
 
 
@@ -15,5 +13,5 @@ const pageNotFound = (req,res) => {
 
 module.exports = {
     home,
-    pageNotFound,
+    
 }

@@ -256,7 +256,9 @@
             <button class="btn btn-dark">Order</button>
             <button class="btn btn-dark">Coupons</button>
             <button class="btn btn-dark">Banner</button>
-            <button class="btn btn-dark"><a href="/admin/adminLogin">Logout</a></button>
+            <form action="/admin/logout" method="POST">
+                <button type="submit" class="btn btn-dark">Logout</button>
+            </form>
         </div>
 
         <div class="Category-container">
@@ -266,22 +268,21 @@
                         <th scope="col">Sl.No</th>
                         <th scope="col">Category Name</th>
                         <th scope="col">Added On</th>
-                        <!-- <th scope="col">Updated On</th> -->
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% categoryDetails.forEach((category,index)=> { %>
-                        <tr>
+                    <% categoryDetails.forEach((category, index)=> { %>
+                        <tr data-id="<%= category._id %>">
                             <th scope="row">
-                                <%= index+1%>
+                                <%= index + 1 %>
                             </th>
-                            <td >
-                                <%= category.name%>
+                            <td class="category-name" data-id="<%= category._id %>">
+                                <%= category.name %>
                             </td>
                             <td>
-                                <%= category.createdAt.toDateString()%>
+                                <%= category.createdAt.toDateString() %>
                             </td>
                             <td>
                                 <% if (category.isBlocked) { %>
@@ -291,8 +292,8 @@
                                         <% } %>
                             </td>
                             <td>
-                                <% if(category.isBlocked){ %>
-                                    <!-- Show  unblock and delete button -->
+                                <% if (category.isBlocked) { %>
+                                    <!-- Show unblock and delete button -->
                                     <button class="btn btn-success me-2"
                                         onclick="unblockCategory('<%= category._id %>')">Unblock
                                     </button>
@@ -315,8 +316,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
 
+    </div>
+    <script src="../../public/alert.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('editCategoryForm').addEventListener('submit', (event) => {
@@ -343,13 +345,13 @@
                 if (result.exists) {
                     alert("Category name already exists!");
 
-                    // Show SweetAlert notification
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Category Name Exists',
-                        text: 'Category already exists.',
-                        confirmButtonText: 'Okay'
-                    });
+                    // // Show SweetAlert notification
+                    // Swal.fire({
+                    //     icon: 'warning',
+                    //     title: 'Category Name Exists',
+                    //     text: 'Category already exists.',
+                    //     confirmButtonText: 'Okay'
+                    // });
 
                     // Prevent form submission
                     return false;
@@ -418,25 +420,26 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Category updated successfully!');
                         // Update existing row in the table
+                        alert('Category updated successfully!');
                         const row = document.querySelector(`tr[data-id="${categoryId}"]`);
                         if (row) {
                             const nameCell = row.querySelector('.category-name');
-
                             if (nameCell) {
                                 nameCell.textContent = categoryName;
                             }
+                        } else {
+                            console.log('Row not found.');
                         }
+
                         $('#editCategoryModal').modal('hide');
-                        // window.location.reload(); // Optionally refresh the page or update the UI
+
                     } else {
                         alert(data.message || 'Error updating category.');
                     }
                 })
                 .catch(error => console.error('Error:', error));
         }
-
 
 
         //Function to Add category 
@@ -478,6 +481,78 @@
                     });
             }
         }
+        //function to UNBLOCK Category
+
+function unblockCategory(categoryID) {
+    // Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: "You are about to unblock this category.",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes, unblock it!',
+    //         cancelButtonText: 'Cancel'}).then((result) => {
+    //         if (result.isConfirmed) {
+    //             const URL = `/admin/unblockCategory/${categoryID}`;
+    //             fetch(URL, {
+    //                 method: 'PUT',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 }
+    //             })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 if (data.message === "Category marked as Unblocked") {
+    //                     Swal.fire(
+    //                         'Unblocked!',
+    //                         'Category has been unblocked successfully.',
+    //                         'success'
+    //                     );
+    //                     // Optionally refresh the page or update the UI
+    //                     window.location.reload(); // Refresh the page to reflect changes
+    //                 } else {
+    //                     Swal.fire(
+    //                         'Failed!',
+    //                         'Failed to unblock category. Please try again.',
+    //                         'error'
+    //                     );
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.error("Error during category unblock:", err);
+    //                 Swal.fire(
+    //                     'Error!',
+    //                     'An error occurred while unblocking the category.',
+    //                     'error'
+    //                 );
+    //             });
+    //         }
+    //     });
+    
+            if (confirm("Are you sure you want to unblock this category?")) {
+                const URL = `/admin/unblockCategory/${categoryID}`;
+                fetch(URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Category unblocked successfully!");
+                            window.location.reload(); // Refresh the page to reflect changes
+                        } else {
+                            alert("Failed to unblock category. Please try again.");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error during category unblock:", err);
+                        alert("An error occurred while unblocking the category.");
+                    });
+            }
+        }
+
         //Function to Delete Category
         function deleteCategory(categoryID) {
             if (confirm("Are you sure you want to delete this category?")) {
@@ -502,9 +577,6 @@
                     });
             }
         }
-
-
-
     </script>
     <%- include('footer') %>
 

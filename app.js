@@ -8,10 +8,24 @@ const admin = require('./router/adminRouter')
 const mongoDBconnection = require('./config/mongoDB')
 const flash = require('connect-flash')
 const app = express()
+const Swal = require('sweetalert2')
+const nocache = require('nocache');
+
+
+
 
 
 //Set EJS as the template engine
 app.set('view engine', 'ejs');
+
+//No-cache middleware
+app.use(nocache())
+//session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+}))
 
 //Use express-ejs-layouts for layout support 
 app.use(expressLayouts);
@@ -22,20 +36,24 @@ app.use('/public',express.static(path.join(__dirname,'public')))
 
 
 
-// //body-Parser
+//body-Parser
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+//No-cache middleware
+app.use(nocache())
 //session
 app.use(session({
-    secret: 'Secret Key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
 }))
+
+//Flash messages
 app.use(flash())
 
 //routes
-app.use('/user', user)
+app.use('/', user)
 app.use('/admin', admin)
 
 
@@ -44,8 +62,11 @@ app.use('/admin', admin)
 mongoDBconnection()
 
 app.get('/', (req, res) => {
-    //res.send('Hello World !')
     res.redirect('user/home')
+})
+
+app.get('*',(req,res) => {
+    res.render('pageNotFound',{ title: 'Page Not Found' })
 })
 
 

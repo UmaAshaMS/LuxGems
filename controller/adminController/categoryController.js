@@ -9,7 +9,7 @@ const category = async (req, res) => {
         if (categoryDetails.length === 0) {
             console.log('No category found')
         }
-        res.render('admin/Category', { title: 'Category', categoryDetails,searchQuery })
+        res.render('admin/Category', { title: 'Category', categoryDetails, searchQuery })
 
     }
     catch (err) {
@@ -55,16 +55,16 @@ const addCategory = async (req, res) => {
         req.flash('error', 'Server Error');
         res.redirect('/admin/category');
     }
-    
+
 };
 
 // Edit category
 const editCategory = async (req, res) => {
     try {
         const { name } = req.body;
-        console.log(name)
+        // console.log(name)
         const category = await categorySchema.findById(req.params.id);
-        console.log(category)
+        // console.log(category)
 
         if (!category) {
             return res.status(404).json({ message: "Category not found" });
@@ -72,7 +72,7 @@ const editCategory = async (req, res) => {
 
         // Check if the new name already exists
         const existingCategory = await categorySchema.findOne({ name: name });
-        console.log(existingCategory)
+        // console.log(existingCategory)
 
         if (existingCategory && existingCategory._id.toString() !== category._id.toString()) {
             return res.status(400).json({ success: false, message: "Category name already exists" });
@@ -120,9 +120,31 @@ const blockCategory = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
-const unblockCategory = async(req,res)=>{
 
+const unblockCategory = async (req, res) => {
+    try {
+        const categoryID = req.params.id;
+        if (!categoryID) {
+            return res.status(404).json({ message: "Category ID not found" });
+        }
+
+        // Find the category by ID
+        const category = await categorySchema.findById(categoryID);
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        // Mark the category as unblocked
+        category.isBlocked = false
+        await category.save();
+
+        res.status(200).json({ message: "Category marked as Unblocked" });
+    } catch (err) {
+        console.error(`Error unblocking category: ${err}`);
+        res.status(500).json({ message: "Server Error" });
+    }
 }
+
 
 const deleteCategory = async (req, res) => {
     try {

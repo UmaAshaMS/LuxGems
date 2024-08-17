@@ -1,5 +1,144 @@
 <body>
 
-<%- include('sidebar') %>
+    <style>
+        .Container {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            border-radius: 10px;
 
+        }
+
+
+        .SideBar .btn {
+            display: block;
+            /* Make buttons stack vertically */
+            width: 150px;
+            margin-bottom: 10px;
+            /* Space between buttons */
+            text-align: center;
+        }
+
+
+
+        .SideBar {
+            width: 250px;
+            margin: 20px;
+            background-color: #caaf7a;
+            color: white;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 10px;
+
+        }
+
+        .SideBar a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .Customer-Page {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .Customer-container {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            margin-left: 0px;
+            padding: 20px;
+            /* Arrange children side by side */
+            gap: 10px;
+            /* Space between sidebar and table */
+
+        }
+
+        .Customer-container table {
+
+            text-align: center;
+            flex-direction: column;
+
+        }
+
+        .btn {
+            width: 100px;
+        }
+
+        .searchProducts {
+            display: flex;
+            flex-direction: row;
+            border: 1px;
+            border-radius: 4px;
+            gap: 10px;
+            width: 800px
+        }
+
+        .Search form {
+            display: flex;
+        }
+
+        .form-control {
+            width: 500px;
+            margin-left: 90px;
+        }
+
+        .searchBtn {
+            flex: 2;
+            width: 10px;
+            color: white;
+            border: 2px;
+            flex-shrink: 0;
+            /* Prevent the button from shrinking */
+        }
+        .italianno-regular {
+            font-family: "Italianno", cursive;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 50px;
+            color: #caaf7a
+        }
+    </style>
+    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
+
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand italianno-regular" href="#" style="font-size: 40px;">Products<span>.</span></a>
+            <div class="collapse navbar-collapse  d-flex flex-grow-1 justify-content-between align-items-center"
+                id="navbars">
+                <div class='Search'>
+                    <div class="searchProducts">
+                        <form method="GET" action="/admin/Products" class="mb-4">
+                            <input type="text" name="searchQuery" placeholder="Search Products" class="form-control"
+                                value="<%= searchQuery %>">
+                            <button type="submit" class="btn btn-white mt-2 searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="Container">
+        <div class='SideBar'>
+            <button class="btn btn-dark"> <a href="/admin/home">Dashboard</a></button>
+            <button class="btn btn-dark"> <a href="/admin/Category">Category</a></button>
+            <button class="btn btn-dark"><a href="/admin/Products">Products</a></button>
+            <button class="btn btn-dark"><a href="/admin/Customers">Customers</a></button>
+            <button class="btn btn-dark">Order</button>
+            <button class="btn btn-dark">Coupons</button>
+            <button class="btn btn-dark">Banner</button>
+            <form action="/admin/logout" method="POST">
+                <button type="submit" class="btn btn-dark">Logout</button>
+            </form>
+        </div>
+    </div>
+<%-include('footer.ejs') %>
 </body>
