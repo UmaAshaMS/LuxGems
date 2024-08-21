@@ -1,6 +1,8 @@
 const express = require('express')
 const admin = express.Router()
 const checkAdminLogin = require('../middleware/adminSession')
+const upload = require('../middleware/multer')
+
 
 const adminLoginControl = require('../controller/adminController/loginController')
 const adminUsercontrol = require('../controller/adminController/userController')
@@ -10,7 +12,7 @@ const adminProductController = require('../controller/adminController/productCon
 //Admin Login
 admin.get('/adminLogin', adminLoginControl.adminLogin)
 admin.post('/adminLogin', adminLoginControl.adminLoginPost)
-admin.get('/home', adminLoginControl.home)
+admin.get('/home',checkAdminLogin,adminLoginControl.home)
 
 
 //User Management
@@ -20,7 +22,6 @@ admin.put('/unblockUser/:userId',checkAdminLogin,adminUsercontrol.userUnblock)
 
 
 //Category Management
-
 admin.get('/Category',checkAdminLogin, adminCategoryControl.category)
 admin.get('/Category/:id',checkAdminLogin, adminCategoryControl.getCategoryDetails);
 admin.post('/addCategory',checkAdminLogin, adminCategoryControl.addCategory)
@@ -32,6 +33,8 @@ admin.delete('/deleteCategory/:id',checkAdminLogin,adminCategoryControl.deleteCa
 
 //Product Management
 admin.get('/Products',checkAdminLogin, adminProductController.product)
+admin.get('/addProduct',checkAdminLogin, adminProductController.addProduct)
+admin.post('/addProduct', upload, adminProductController.addProductPost)
 
 
 //Admin Logout

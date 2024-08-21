@@ -1,4 +1,5 @@
-const userSchema = require('../../model/userSchema')
+const userSchema = require('../../model/userSchema');
+const user = require('../../router/userRouter');
 
 
 const userDashboard = async (req, res) => {
@@ -16,6 +17,7 @@ const userDashboard = async (req, res) => {
 const userBlock = async (req, res) => {
     try {
         const userId = req.params.userId;
+        console.log(userId)
         if (!userId) {
             return res.status(404).json({ message: "User id not found" })
         }
@@ -24,6 +26,7 @@ const userBlock = async (req, res) => {
 
 
         if (blockedUser) {
+            console.log('user blocked')
             return res.status(200).json({ message: "User blocked" })
         } else {
             return res.status(404).json({ message: "User not found" })

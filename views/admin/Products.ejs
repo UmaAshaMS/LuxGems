@@ -4,11 +4,28 @@
         .Container {
             display: flex;
             flex: 1;
-            flex-direction: column;
+            flex-direction: row;
             border-radius: 10px;
 
         }
+        .Product-container {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            margin-left: 0px;
+            padding: 20px;
+            /* Arrange children side by side */
+            /* Space between sidebar and table */
+            
+        }
 
+        .Product-container table {
+
+            text-align: center;
+            flex-direction: column;
+            flex:1;
+        
+        }
 
         .SideBar .btn {
             display: block;
@@ -46,25 +63,6 @@
             flex-direction: column;
         }
 
-        .Customer-container {
-            display: flex;
-            flex-direction: row;
-            flex: 1;
-            margin-left: 0px;
-            padding: 20px;
-            /* Arrange children side by side */
-            gap: 10px;
-            /* Space between sidebar and table */
-
-        }
-
-        .Customer-container table {
-
-            text-align: center;
-            flex-direction: column;
-
-        }
-
         .btn {
             width: 100px;
         }
@@ -75,7 +73,9 @@
             border: 1px;
             border-radius: 4px;
             gap: 10px;
-            width: 800px
+            width: 800px;
+            margin-top: 2%;
+
         }
 
         .Search form {
@@ -95,12 +95,55 @@
             flex-shrink: 0;
             /* Prevent the button from shrinking */
         }
+
         .italianno-regular {
             font-family: "Italianno", cursive;
             font-weight: 600;
             font-style: normal;
             font-size: 50px;
             color: #caaf7a
+        }
+
+        .AddProduct {
+            background-color: #caaf7a;
+            color: black;
+            font-weight: 700;
+            width: 200px;
+            align-items: end;
+            align-self: flex-end;
+            margin-right: 0%;
+            transition: background-color 0.3s ease;
+            margin-top: 0%;
+            margin-right: 0%;
+            justify-content: center;
+        }
+
+        .AddProduct a{
+            text-decoration: none;
+            color:black
+        }
+
+        .AddProduct:hover,
+        .AddProduct:focus,
+        .AddProduct:active {
+            background-color: #b49569;
+            /* Slightly darker shade on interaction */
+            color: black;
+            /* Keep the text color black */
+            outline: none;
+            /* Remove outline */
+            box-shadow: none;
+            /* Remove any shadow applied by Bootstrap */
+        }
+
+        .table {
+            margin-top: 0%;
+            width: 700px;
+            height: auto;
+            border: black;
+            text-align: center;
+            height: fit-content;
+            align-self:center;
         }
     </style>
     <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="navigation bar">
@@ -122,23 +165,79 @@
 
                     </div>
                 </div>
+                <!-- Button to Open the Modal -->
+                <form method="GET" action="">
+
+                    <button type="button" class="btn AddProduct" data-bs-toggle="modal" data-bs-target="#productModal"
+                        style="margin-right: 0%;"><a href="/admin/addProduct">Add Product</a>
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
+    <div class="Product-container">
 
-    <div class="Container">
-        <div class='SideBar'>
-            <button class="btn btn-dark"> <a href="/admin/home">Dashboard</a></button>
-            <button class="btn btn-dark"> <a href="/admin/Category">Category</a></button>
-            <button class="btn btn-dark"><a href="/admin/Products">Products</a></button>
-            <button class="btn btn-dark"><a href="/admin/Customers">Customers</a></button>
-            <button class="btn btn-dark">Order</button>
-            <button class="btn btn-dark">Coupons</button>
-            <button class="btn btn-dark">Banner</button>
-            <form action="/admin/logout" method="POST">
-                <button type="submit" class="btn btn-dark">Logout</button>
-            </form>
+        <div class="Container">
+            <div class='SideBar'>
+                <button class="btn btn-dark"> <a href="/admin/home">Dashboard</a></button>
+                <button class="btn btn-dark"> <a href="/admin/Category">Category</a></button>
+                <button class="btn btn-dark"><a href="/admin/Products">Products</a></button>
+                <button class="btn btn-dark"><a href="/admin/Customers">Customers</a></button>
+                <button class="btn btn-dark">Order</button>
+                <button class="btn btn-dark">Coupons</button>
+                <button class="btn btn-dark">Banner</button>
+                <form action="/admin/logout" method="POST">
+                    <button type="submit" class="btn btn-dark">Logout</button>
+                </form>
+            </div>
+
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Sl.No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                        <tr>
+                            <th scope="row">
+                                <%= index+1%>
+                            </th>
+                            <td><%= product.productName %></td>
+                            <td><%= product.productPrice %></td>
+                            <td><%= product.productQuantity %></td>
+                            <td><%= product.productCategory %></td>
+                            <td><%= product.productStatus %></td>
+                            <td><%= product.productQuantity %></td>
+                            <td>
+                                <% product.productImage.forEach(image => { %>
+                                    <img src="/uploads/<%= image %>" alt="<%= product.productName %>" width="100">
+                                <% }); %>
+                            </td>
+                            <!-- Other product details -->
+                        </tr>
+                    <% }); %>
+                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-warning">Edit</button>
+                        <button class="btn btn-danger">Block</button>
+                    </td>
+                </tbody>
+            </table>
+
         </div>
     </div>
-<%-include('footer.ejs') %>
+
+    <%-include('footer.ejs') %>
 </body>

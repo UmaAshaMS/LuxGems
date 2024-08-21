@@ -1,13 +1,10 @@
 <body>
-
-
     <style>
         .Container {
             display: flex;
             flex: 1;
             flex-direction: column;
             border-radius: 10px;
-
         }
 
 
@@ -75,7 +72,9 @@
             border: 1px;
             border-radius: 4px;
             gap: 10px;
-            width:800px
+            width:800px;
+            margin-top: 2%;
+
         }
 
         .Search form {
@@ -222,7 +221,9 @@
                     if (response.ok) {
                         location.reload(); // Reload the page to reflect changes
                     } else {
+                        // console.error('Failed to block the user:', response.statusText);
                         alert("Failed to block the user.");
+
                     }
                 })
                 .catch(error => console.error('Error:', error));

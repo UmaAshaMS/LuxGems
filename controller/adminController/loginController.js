@@ -6,12 +6,10 @@ const adminLogin = (req, res) => {
         if (req.session.admin) {
             res.setHeader('Cache-Control', 'no-store'); // Prevent caching
             // console.log('Session set:', req.session.admin);  // Log session data
-
             res.redirect('/admin/home')
         }
         else {
             res.render('admin/adminLogin', { title: 'Admin Login' })
-
         }
     }
     catch (err) {
@@ -57,21 +55,20 @@ const home = (req, res) => {
 const logout = (req, res) => {
     try {
         // console.log('Session before destruction:', req.session);
-
+        const userData = req.session.admin;
+        console.log("admin data",userData)
         // Destroy admin session
         req.session.destroy((err) => {
             if (err) {
                 // Log any error that occurs during session destruction
                 console.log(`error during session logout${err}`)
-                res.redirect('/admin/home')
-
-
+                // res.redirect('/admin/home')
             }
             else{
             // Redirect to admin dashboard after logout
+            // res.clearCookie('connect.sid'); // Clear the session cookie
             res.redirect('/admin/adminLogin')
             }
-            // console.log('Session after logout:', req.session); // Should be undefined
 
         })
     } catch (error) {

@@ -8,9 +8,10 @@ const admin = require('./router/adminRouter')
 const mongoDBconnection = require('./config/mongoDB')
 const flash = require('connect-flash')
 const app = express()
-const Swal = require('sweetalert2')
 const nocache = require('nocache');
-
+const bcrypt = require('bcrypt');
+const otpGenerator = require('otp-generator');
+const multer = require('multer');
 
 
 
@@ -33,6 +34,8 @@ app.set('layout', './layouts/layout')
 
 //path setting
 app.use('/public',express.static(path.join(__dirname,'public')))
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
+
 
 
 
@@ -47,6 +50,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: false }
 }))
 
 //Flash messages
@@ -55,8 +59,6 @@ app.use(flash())
 //routes
 app.use('/', user)
 app.use('/admin', admin)
-
-
 
 //Database connection 
 mongoDBconnection()
