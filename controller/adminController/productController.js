@@ -191,7 +191,7 @@ const editProductSubmit = async (req, res) => {
             productImages = req.files.productImage.map(file => file.filename);
           
         }
-
+        console.log(productImages);
         // Extract form data from the request body
         const { productName, productCategory, productPrice, stock, productDescription, productDiscount } = req.body;
         const productId = req.params.id;
@@ -206,17 +206,16 @@ const editProductSubmit = async (req, res) => {
         }
 
         // Check if there's another product with the same name and category (excluding this product)
-       
 
         // Prepare the update data
         const updateData = {
-            productName,
-            productCategory,
-            productPrice, 
-            stock,
-            productDescription,
-            productDiscount,
-            ...(productImages.length > 0 && { productImage: productImages }) // Update images only if new images are uploaded
+            productName: productName,
+            productCategory: productCategory,
+            productPrice: productPrice, 
+            stock: stock,
+            productDescription: productDescription,
+            productDiscount: productDiscount,
+            productImage: productImages // Update images only if new images are uploaded
         };
       
         // Update the product in the database
@@ -230,7 +229,7 @@ const editProductSubmit = async (req, res) => {
         res.redirect('/admin/Products');
     } catch (err) {
         // Handle errors and provide feedback to the user
-        console.log(`Error in submitting edit product form: ${err}`);
+        console.log(`Error in submitting edit product form: ${err}: ${err.stack}`);
         req.flash('error', 'An error occurred while updating the product.');
         res.redirect(`/admin/editProduct/${req.params.id}`);
     }

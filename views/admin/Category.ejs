@@ -386,16 +386,17 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(data)
+                    console.log(`data: ${Object.keys(data)}`)
 
                     if (data) {
                         // if (data.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text:' ',
-                            })
+                            // Swal.fire({
+                           //     icon: 'success',
+                            //     title: 'Success',
+                            //     text:' ',
+                            // })
                         // Populate modal form fields with category details
+                        console.log(`data._id: ${data._id}`)
                         document.getElementById('editCategoryId').value = data._id;
                         document.getElementById('editCategoryName').value = data.name;
                         // Show the modal
