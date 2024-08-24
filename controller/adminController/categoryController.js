@@ -75,24 +75,24 @@ const editCategory = async (req, res) => {
         // console.log(existingCategory)
 
         if (existingCategory && existingCategory._id.toString() !== category._id.toString()) {
+               req.flash('error', 'Category name already exists');
             return res.status(400).json({ success: false, message: "Category name already exists" });
 
-            // req.flash('error', 'Category name already exists');
             // return res.redirect('/admin/category');
         }
 
         category.name = name;
         await category.save();
-
+        req.flash('success', 'Category added successfully');
         return res.status(200).json({ success: true, message: "Category updated successfully" });
 
-        // req.flash('success', 'Category added successfully');
         // res.redirect('/admin/category');
     } catch (err) {
         console.error(`Error in editing category: ${err}`);
+        req.flash('error', 'Server Error');
+
         return res.status(500).json({ success: false, message: "Server Error" });
 
-        // req.flash('error', 'Server Error');
         // res.redirect('/admin/category');
     }
 };

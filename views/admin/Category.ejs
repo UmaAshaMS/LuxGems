@@ -378,7 +378,7 @@
 
 
         function editCategory(categoryId) {
-            console.log('Edit function is called')
+            // console.log('Edit function is called')
             // Fetch category details to populate the modal
             fetch(`/admin/Category/${categoryId}`, {
                 method: 'GET',
@@ -390,11 +390,11 @@
 
                     if (data) {
                         // if (data.success) {
-                        //     Swal.fire({
-                        //         icon: 'success',
-                        //         title: 'Success',
-                        //         text: data.message,
-                        //     })
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text:' ',
+                            })
                         // Populate modal form fields with category details
                         document.getElementById('editCategoryId').value = data._id;
                         document.getElementById('editCategoryName').value = data.name;
@@ -483,55 +483,9 @@
                     });
             }
         }
-        //function to UNBLOCK Category
+        //function to Unblock Category
 
-function unblockCategory(categoryID) {
-    // Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "You are about to unblock this category.",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, unblock it!',
-    //         cancelButtonText: 'Cancel'}).then((result) => {
-    //         if (result.isConfirmed) {
-    //             const URL = `/admin/unblockCategory/${categoryID}`;
-    //             fetch(URL, {
-    //                 method: 'PUT',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 }
-    //             })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 if (data.message === "Category marked as Unblocked") {
-    //                     Swal.fire(
-    //                         'Unblocked!',
-    //                         'Category has been unblocked successfully.',
-    //                         'success'
-    //                     );
-    //                     // Optionally refresh the page or update the UI
-    //                     window.location.reload(); // Refresh the page to reflect changes
-    //                 } else {
-    //                     Swal.fire(
-    //                         'Failed!',
-    //                         'Failed to unblock category. Please try again.',
-    //                         'error'
-    //                     );
-    //                 }
-    //             })
-    //             .catch(err => {
-    //                 console.error("Error during category unblock:", err);
-    //                 Swal.fire(
-    //                     'Error!',
-    //                     'An error occurred while unblocking the category.',
-    //                     'error'
-    //                 );
-    //             });
-    //         }
-    //     });
-    
+        function unblockCategory(categoryID) {
             if (confirm("Are you sure you want to unblock this category?")) {
                 const URL = `/admin/unblockCategory/${categoryID}`;
                 fetch(URL, {

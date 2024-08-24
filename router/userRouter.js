@@ -24,7 +24,7 @@ user.post('/user/Forgot-Password',userLoginControl.ForgotPasswordpost)
 
 user.get('/user/home', userHomeControl.home)
 
-user.get('/user/productView', userProductControl.productViewRender)
+user.get('/user/AllProducts', userProductControl.AllproductsRender)
 
 
 

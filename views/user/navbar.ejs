@@ -143,10 +143,10 @@
     </nav>
     <div class=" Nav-Bottom">
         <ul>
-            <li><a href="productView">Earrings</a></li>
-            <li><a href="productView">Necklace</a></li>
-            <li><a href="productView">Bangles</a></li>
-            <li><a href="productView">Rings</a></li>
+            <% category.forEach((cat) => { %>
+            <li><a href="/productView?category=<%= cat.name %>"><%= cat.name %></a></li>
+            <% }) %>
+            <li><a href="404">Rings</a></li>
             <li><a href="404">Weddings</a></li>
             <li><a href="404">Giftings</a></li>
             <li><a href="404">Birth Stones</a></li>

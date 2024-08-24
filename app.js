@@ -56,6 +56,13 @@ app.use(session({
 //Flash messages
 app.use(flash())
 
+// Pass flash messages to all views
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 //routes
 app.use('/', user)
 app.use('/admin', admin)

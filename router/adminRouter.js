@@ -32,9 +32,14 @@ admin.delete('/deleteCategory/:id',checkAdminLogin,adminCategoryControl.deleteCa
 
 
 //Product Management
-admin.get('/Products',checkAdminLogin, adminProductController.product)
+admin.get('/Products',checkAdminLogin, adminProductController.getproduct)
 admin.get('/addProduct',checkAdminLogin, adminProductController.addProduct)
-admin.post('/addProduct', upload, adminProductController.addProductPost)
+admin.post('/addProduct', upload.array('productImage', 4), adminProductController.addProductPost)
+admin.get('/editProduct/:id',checkAdminLogin,adminProductController.editProduct)
+admin.post('/editProduct/:id',upload.array('productImage', 4), checkAdminLogin, adminProductController.editProductSubmit)
+admin.put('/blockProduct/:id', checkAdminLogin, adminProductController.blockProduct)
+admin.put('/unblockProduct/:id', checkAdminLogin, adminProductController.unblockProduct)
+admin.delete('/deleteProduct/:id', checkAdminLogin, adminProductController.deleteProduct)
 
 
 //Admin Logout

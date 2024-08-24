@@ -1,15 +1,12 @@
 const userSchema = require('../../model/userSchema')
+const categorySchema = require('../../model/categorySchema')
 
 
-const home = (req, res) => {
-    res.render('user/home', { title: 'Home Page' })
+const home = async(req, res) => {
+    const category = await categorySchema.find();
+
+    res.render('user/home', { title: 'Home Page' , category})
 }
-
- 
-
-
-
-
 
 module.exports = {
     home,
