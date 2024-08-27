@@ -180,7 +180,7 @@ const editProduct = async (req, res) => {
     }
 }
 
-const editProductSubmit = async (req, res) => {
+const editProductPost = async (req, res) => {
     console.log('Edit product form submitted');
     try {
         console.log('Request body:', req.body);
@@ -241,7 +241,7 @@ module.exports = {
     addProduct,
     addProductPost,
     editProduct,
-    editProductSubmit,
+    editProductPost,
     blockProduct,
     unblockProduct,
     deleteProduct,

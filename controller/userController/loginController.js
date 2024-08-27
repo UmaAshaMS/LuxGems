@@ -1,33 +1,18 @@
 const userSchema = require('../../model/userSchema')
 const bcrypt = require('bcrypt')
-const otpGenerator = require('otp-generator');
-const nodemailer = require('nodemailer');
-
-
-
-
-// Set up email transporter
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'your.email@gmail.com',
-        pass: 'yourpassword'
-    }
-});
-
-
-
+const sendOTP = require('../../services/emailSender')
+const generateOTP = require('../../services/generateOTP')
 
 
 
 const login = (req, res) => {
     try {
-        res.render('user/login', {
-            title: 'Login',
-            user: req.session.user,
-            alertMessage: req.flash('error'),
-            query: req.query
-        })
+        if (req.session.user) {
+            res.render('user/home')
+        }
+        else {
+            res.render('user/login', { title: 'Login', user: req.session.user, query: req.query, alertMessage: req.flash('error'), })
+        }
     }
     catch (err) {
         console.log(`Error in rendering login page ${err}`)
@@ -37,22 +22,42 @@ const login = (req, res) => {
 const loginPost = async (req, res) => {
     try {
         //find from the database
-        const checkUser = await userSchema.findOne({ email: req.body.email, password: req.body.password })
+        const checkUser = await userSchema.findOne({ email: req.body.email})
+
+        // Log the user found
+        console.log('User found:', checkUser);
 
         if (!checkUser) {
             //if user not found, set flash message as alert and redirect
             req.flash('error', 'Invalid user credentials')
-            res.redirect('/user/login')
+            console.log('Invalid user credentials')
+            return res.redirect('/user/login')
         }
         if (checkUser.isBlocked) {
             // User is blocked, set flash message and redirect
-            console.log("User blocked")
+            console.log("User blocked by admin")
             req.flash('error', 'Your account has been blocked. Please contact support.');
             return res.redirect('/user/login');
         }
 
-        // If user found and not blocked by admin, redirect to home
-        res.redirect('/user/home')
+        // Compare the provided password with the stored hashed password
+        const isPasswordValid = await bcrypt.compare(req.body.password.trim(), checkUser.password);
+        console.log(isPasswordValid)
+
+        // Log user and password for debugging
+        console.log('Provided password:', req.body.password);
+        console.log('Stored hashed password:', checkUser.password);
+
+        if (isPasswordValid) {
+            // If password is correct, redirect to home
+            req.session.user = checkUser;
+            res.redirect('/user/home');
+        } else {
+            // If password is incorrect, set flash message and redirect
+            req.flash('error', 'Invalid user credentials');
+            console.log('Invalid user credentials');
+            res.redirect('/user/login');
+        }
 
     }
     catch (err) {
@@ -63,10 +68,15 @@ const loginPost = async (req, res) => {
 
 const SignUp = (req, res) => {
     try {
-        res.render('user/Sign-Up', { title: 'Sign-Up', alertMessage: req.flash('error') })
+        if (req.session.user) {
+            res.redirect('/home')
+        }
+        else {
+            res.render('user/Sign-Up', { title: 'Sign-Up', alertMessage: req.flash('error'), user: req.session.user })
+        }
     }
     catch (err) {
-        console.log(`Error in rendering Sign-   Up page, ${err}`)
+        console.log(`Error in rendering Sign-Up page, ${err}`)
     }
 }
 
@@ -96,16 +106,29 @@ const SignUpPost = async (req, res) => {
         const checkUserExists = await userSchema.findOne({ email: req.body.email })
 
         if (!checkUserExists) {
-            await userSchema.create(userData);
-            console.log(userData)
+            // await userSchema.create(userData);
+            // console.log('Data of the new user : ', userData)
             console.log('New User');
+            const otp = generateOTP()
+            sendOTP(userData.email, otp)
+            req.flash('success', `OTP sent to the ${userData.email} `)
+            console.log('OTP send to the user mail')
 
-            if (emailRegex.test(req.body.email)) {
-                // Generate and send OTP
-                await generateAndSendOTP(email);
-                res.redirect('/user/OTP');  // Redirect to OTP verification page
+            req.session.otp = otp
+            req.session.otpTime = Date.now()
+            req.session.email = userData.email
+            req.session.name = userData.name
+            req.session.phoneNumber = userData.phoneNumber
+            req.session.password = userData.password
 
-            }
+            // if (emailRegex.test(req.body.email)) {
+            //     // Generate and send OTP
+            //     await generateAndSendOTP(email);
+            // res.redirect('/user/OTP');  // Redirect to OTP verification page
+
+            // }
+            res.redirect('/user/OTPpage');  // Redirect to OTP verification page
+
         }
         else {
             req.flash('error', 'User already exists')
@@ -119,82 +142,100 @@ const SignUpPost = async (req, res) => {
 }
 
 const otpPage = (req, res) => {
-    res.render('user/OTPverify', { title: 'OTP Page' })
-}
-
-const otpVerify = async (req, res) => {
     try {
-        const { email, otp } = req.body;
-        
-        // Check if OTP matches the one stored for the user
-        const user = await userSchema.findOne({ email });
 
-        if (user && user.otp === otp) {
-            // OTP is correct, you can proceed to log the user in or take other actions
-            console.log('OTP verified successfully');
-            res.redirect('/user/home');  // Redirect to home or another page
-        } else {
-            // OTP is incorrect
-            req.flash('error', 'Invalid OTP');
-            res.redirect('/user/OTP');  // Redirect back to OTP page
-        }
-    } catch (err) {
-        console.error('Error verifying OTP:', err);
-        res.redirect('/user/OTP');
-    }
-};
-
-
-
-const ForgotPassword = (req, res) => {
-    res.render('user/Forgot-Password', { title: 'Forgot-Password' })
-}
-
-const ForgotPasswordpost = (req, res) => {
-    try {
-        res.render('user/otpVerify', { title: 'OTP Verify' })
+        res.render('user/OTPpage', {
+            title: 'OTP Page',
+            email: req.session.email,
+            otpTime: req.session.otpTime,
+            user: req.session.user
+        })
     }
     catch (err) {
-        console.error(err)
+        console.log(`Error in rendering OTP Page: ${err}`)
     }
 }
 
-
-
-const generateAndSendOTP = async (userEmail) => {
+const otpPagePost = async (req, res) => {
+    // console.log('Reached otppagePost')
+    console.log(req.session)
     try {
-        // Generate OTP
-        const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+        // console.log('Reached otppagePost try')
+        if (req.session.otp !== undefined) {
+            console.log(req.session.otp)
+          const userData = {
+            name: req.session.name,
+            email: req.session.email,
+            password: req.session.password,
+            phoneNumber: req.session.phoneNumber
+          }
+          const userOtp = req.body.otp.trim();
+          const sessionOtp = req.session.otp.trim();
+          if (userOtp === sessionOtp) {
 
-        // Save OTP to user's record (assuming you have a field for OTP in your schema)
-        await userSchema.updateOne({ email: userEmail }, { otp });
+            // console.log('User entered OTP:', userOtp);
+            // console.log('Session stored OTP:', sessionOtp);
+            console.log('OTP matched')
 
-        // Send OTP via email
-        let mailOptions = {
-            from: 'your.email@gmail.com',
-            to: userEmail,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is ${otp}`
-        };
-
-        await transporter.sendMail(mailOptions);
-    } catch (err) {
-        console.error('Error generating or sending OTP:', err);
-    }
+            await userSchema
+              .insertMany(userData)
+              .then(() => {
+                console.log(`New user registered successfully`)
+                req.flash('success', 'user signup successfull')
+                res.redirect('/user/login')
+              })
+              .catch(err => {
+                console.log(`error while user signup ${err}`)
+              })
+          } else {
+            req.flash('error', 'Invaild OTP , Try Again')
+            console.log('Error in OTP')
+            res.redirect('/user/OTPpage')
+          }
+        }
+      } catch (error) {
+        console.log(`error while verifying otp${error}`)
+      }
 };
 
+const resendOTPSignUp = async(req, res) => {
+    try {
+        const email = req.body.email; // Get email from request body
+        const otp = generateOTP(); // Generate OTP
 
+        await sendOTP(email, otp); // Ensure sendOTP returns a promise
+        req.session.otp = otp;
+        req.session.otpTime = Date.now();
 
+        req.flash('success', 'OTP resent successfully');
+        res.redirect('/user/OTPpage');
+    } catch (error) {
+        console.log(`Error while resending OTP: ${error}`);
+        res.status(500).send('Internal Server Error');
+    }
+  
+}
+
+const logout = (req, res) => {
+    try {
+      req.session.destroy(error => {
+        if (error) {
+          console.log(`Error in logout ${error}`)
+        }
+      })
+      res.redirect('/user/home')
+    } catch (error) {
+      console.log(`Error in user logout ${error}`)
+    }
+  }
 
 module.exports = {
     login,
     loginPost,
     SignUp,
     SignUpPost,
-    ForgotPassword,
-    ForgotPasswordpost,
     otpPage,
-    otpVerify,
-    generateAndSendOTP,
-
+    otpPagePost,
+    resendOTPSignUp,
+    logout
 }
